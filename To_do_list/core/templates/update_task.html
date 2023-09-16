@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Task</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Update Task</h2>
+        <form method="post">
+            {% csrf_token %}
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" value="{{ task.title }}" required>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" required>{{ task.description }}</textarea>
+
+            <input type="checkbox" id="completed" name="completed" {% if task.completed %}checked{% endif %}>
+            <label for="completed">Completed</label>
+
+            <button type="submit">Update Task</button>
+        </form>
+    </div>
+</body>
+</html>
