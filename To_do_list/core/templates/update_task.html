@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Task</title>
     <style>
-        /* Global Styles */
+        
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -25,7 +25,7 @@
             margin-top: 0;
         }
 
-        /* Form Styles */
+        
         form {
             margin-top: 20px;
         }
@@ -48,7 +48,7 @@
             margin-right: 5px;
         }
 
-        /* Button Styles */
+        
         .btn {
             padding: 10px 20px;
             background-color: #007bff;
@@ -62,11 +62,18 @@
         .btn:hover {
             background-color: #0056b3;
         }
+
+       
+        .serial-number {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Update Task</h2>
+        <div class="serial-number">Task ID: {{ task.id }}</div>
         <form method="post">
             {% csrf_token %}
             <label for="title">Title:</label>

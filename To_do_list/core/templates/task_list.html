@@ -1,65 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task List</title>
     <style>
-        /* Global Styles */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+        .task-actions {
+            text-align: center;
+        }
+        .task-actions a {
+            text-decoration: none;
+            padding: 6px 12px;
+            margin-right: 5px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 4px;
+        }
+        .task-actions a:hover {
+            background-color: #0056b3;
+        }
+        
+        
+        .add-task-btn-container {
+            text-align: right;
+            margin-top: 20px;
+        }
+        .add-task-btn {
+            text-decoration: none;
+            padding: 12px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            outline: none;
+        }
+        .add-task-btn:hover {
+            background-color: #218838;
         }
 
+       
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
             background-color: #fff;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
         }
 
         h2 {
             margin-top: 0;
-        }
-
-        /* Table Styles */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        .completed {
-            text-decoration: line-through;
-            color: #888;
-        }
-
-        /* Button Styles */
-        .btn {
-            display: inline-block;
-            padding: 5px 10px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .btn:hover {
-            background-color: #0056b3;
+            font-size: 24px;
+            color: #333;
         }
     </style>
 </head>
@@ -69,17 +82,17 @@
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>To-Do</th>
+                    <th>Sl NO.</th>
+                    <th>To-Do-List</th>
                     <th>Description</th>
                     <th>Status</th>
-                    <th>Action</th>
+                    <th class="task-actions">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for task in tasks %}
                     <tr>
-                        <td>{{ task.id }}</td>
+                        <td>{{ forloop.counter }}</td>
                         <td>{{ task.title }}</td>
                         <td>{{ task.description }}</td>
                         <td>
@@ -87,21 +100,24 @@
                                 {% csrf_token %}
                                 <input type="hidden" name="task_id" value="{{ task.id }}">
                                 {% if task.completed %}
-                                    <button type="submit" name="action" value="mark_incomplete" class="btn">Incomplete</button>
+                                    <button type="submit" name="action" value="mark_incomplete" class="btn btn-danger">Incomplete</button>
                                 {% else %}
-                                    <button type="submit" name="action" value="mark_complete" class="btn">Complete</button>
+                                    <button type="submit" name="action" value="mark_complete" class="btn btn-success">Complete</button>
                                 {% endif %}
                             </form>
                         </td>
-                        <td>
-                            <a href="{% url 'update_task' task.id %}" class="btn">Edit</a>
-                            <a href="{% url 'delete_task' task.id %}" class="btn">Delete</a>
+                        <td class="task-actions">
+                            <a href="{% url 'update_task' task.id %}" class="btn btn-primary">Edit</a>
+                            <a href="{% url 'delete_task' task.id %}" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <a href="{% url 'add_task' %}" class="btn">Add Task</a>
+        
+        <div class="add-task-btn-container">
+            <a href="{% url 'add_task' %}" class="add-task-btn">Add Task</a>
+        </div>
     </div>
 </body>
 </html>
