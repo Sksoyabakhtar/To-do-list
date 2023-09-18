@@ -2,35 +2,62 @@
 <html lang="en">
 <head>
     <style>
-        
-        .completed-task {
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .completed {
             text-decoration: line-through;
             color: #888;
-        }
-
-        .completed-marker::before {
-            content: '\2713';
-            color: #008000;
-            font-weight: bold;
-            margin-right: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Task List</h2>
-        <ul>
-            {% for task in tasks %}
-                <li {% if task.completed %}class="completed-task"{% endif %}>
-                    {% if task.completed %}
-                        <span class="completed-marker"></span>
-                    {% endif %}
-                    {{ task.title }} - {{ task.description }}
-                    <a href="{% url 'update_task' task.id %}">Edit</a>
-                    <a href="{% url 'delete_task' task.id %}">Delete</a>
-                </li>
-            {% endfor %}
-        </ul>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>To-Do-List</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.id }}</td>
+                        <td>{{ task.title }}</td>
+                        <td>{{ task.description }}</td>
+                        <td>
+                            <form method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="task_id" value="{{ task.id }}">
+                                {% if task.completed %}
+                                    <button type="submit" name="action" value="mark_incomplete">Incomplete</button>
+                                {% else %}
+                                    <button type="submit" name="action" value="mark_complete">Complete</button>
+                                {% endif %}
+                            </form>
+                        </td>
+                        <td>
+                            <a href="{% url 'update_task' task.id %}">Edit</a>
+                            <a href="{% url 'delete_task' task.id %}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
         <a href="{% url 'add_task' %}">Add Task</a>
     </div>
 </body>
